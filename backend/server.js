@@ -4,7 +4,10 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://hareram-p0msckhjv-sahils-projects-59dff70b.vercel.app",
+  methods: ["GET", "POST"],
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
