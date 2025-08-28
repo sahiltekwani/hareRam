@@ -4,10 +4,28 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 const app = express();
-app.use(cors({
-  origin: "https://hareram-p0msckhjv-sahils-projects-59dff70b.vercel.app",
-  methods: ["GET", "POST"],
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // allow server-to-server, curl, Postman
+
+      const allowed = [
+        "http://localhost:3000",
+        "https://hareram-p0msckhjv-sahils-projects-59dff70b.vercel.app",
+        "https://your-production-domain.com",
+      ];
+
+      // also allow any subdomain on vercel.app
+      if (allowed.includes(origin) || origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
